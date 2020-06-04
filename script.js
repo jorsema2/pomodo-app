@@ -1,6 +1,11 @@
+const shownTimer = document.getElementById('countdown-timer');
+
+// Buttons:
 const startButton = document.getElementById('start');
 const stopButton = document.getElementById('stop');
 const resetButton = document.getElementById('reset');
+
+// Variable called to start and stop the timer:
 let myTimer;
 
 // Variables declared for work duration per period:
@@ -23,7 +28,7 @@ function startCount() {
         const minutes = Math.floor((countDownLeft - seconds) / 60);
         
         if (countDownLeft <= 0) {
-            console.log('00:00');
+            shownTimer.innerHTML = "00:00";
             clearInterval(myTimer);
             countDownLeft = chosenTimerDuration;
             if (breaksLeft === 0) {
@@ -35,14 +40,14 @@ function startCount() {
         } if (minutes < 10) {
             if (seconds < 10) {
                 countDownTimer = '0' + minutes + ':' + '0' + seconds;
-                console.log(countDownTimer);
+                shownTimer.innerHTML = countDownTimer;
             } else {
                 countDownTimer = '0' + minutes + ':' + seconds;
-                console.log(countDownTimer);
+                shownTimer.innerHTML = countDownTimer;
             }
         } else {
             countDownTimer = minutes + ':' + seconds;
-            console.log(countDownTimer);
+            shownTimer.innerHTML = countDownTimer;
         }
         countDownLeft--;
     }
@@ -57,7 +62,7 @@ function breaks() {
         const minutes = Math.floor((breakDurationLeft - seconds) / 60);
         
         if (breakDurationLeft <= 0) {
-            console.log('00:00');
+            shownTimer.innerHTML = "00:00";
             clearInterval(myTimer);
             breakDurationLeft = chosenBreakDuration;
             breaksLeft--;
@@ -66,14 +71,14 @@ function breaks() {
         } if (minutes < 10) {
             if (seconds < 10) {
                 countDownTimer = '0' + minutes + ':' + '0' + seconds;
-                console.log(countDownTimer);
+                shownTimer.innerHTML = countDownTimer;
             } else {
                 countDownTimer = '0' + minutes + ':' + seconds;
-                console.log(countDownTimer);
+                shownTimer.innerHTML = countDownTimer;
             }
         } else {
             countDownTimer = minutes + ':' + seconds;
-            console.log(countDownTimer);
+            shownTimer.innerHTML = countDownTimer;
         }
         breakDurationLeft--;
     }
@@ -86,27 +91,17 @@ function resetTimer() {
     const seconds = countDownLeft % 60;
     const minutes = Math.floor((countDownLeft - seconds) / 60);
 
-    if (countDownLeft <= 0) {
-        console.log('00:00');
-        clearInterval(myTimer);
-        countDownLeft = chosenTimerDuration;
-        if (breaksLeft === 0) {
-            startButton.removeAttribute("disabled", "disabled");
-            return;
-        }
-        breaks();
-        return;
-    } if (minutes < 10) {
+    if (minutes < 10) {
         if (seconds < 10) {
             countDownTimer = '0' + minutes + ':' + '0' + seconds;
-            console.log(countDownTimer);
+            shownTimer.innerHTML = countDownTimer;
         } else {
             countDownTimer = '0' + minutes + ':' + seconds;
-            console.log(countDownTimer);
+            shownTimer.innerHTML = countDownTimer;
         }
     } else {
         countDownTimer = minutes + ':' + seconds;
-        console.log(countDownTimer);
+        shownTimer.innerHTML = countDownTimer;
     }    
 }
 
