@@ -1,5 +1,7 @@
 const startButton = document.getElementById('start');
 const stopButton = document.getElementById('stop');
+const resetButton = document.getElementById('reset');
+let myTimer;
 
 // Variables declared for work duration per period:
 const chosenTimerDuration = 5;
@@ -14,7 +16,7 @@ let breakDurationLeft = chosenBreakDuration;
 
 // Function to count time left to work during one period:
 function startCount() {
-    const myTimer = setInterval(timer, 1000);
+    myTimer = setInterval(timer, 1000);
 
     function timer() {
         const seconds = countDownLeft % 60;
@@ -25,6 +27,7 @@ function startCount() {
             clearInterval(myTimer);
             countDownLeft = chosenTimerDuration;
             if (breaksLeft === 0) {
+                startButton.removeAttribute("disabled", "disabled");
                 return;
             }
             breaks();
@@ -47,7 +50,7 @@ function startCount() {
 
 // Function to count time left for break:
 function breaks() {
-    const myTimer = setInterval(timer, 1000);
+    myTimer = setInterval(timer, 1000);
 
     function timer() {
         const seconds = breakDurationLeft % 60;
@@ -76,7 +79,50 @@ function breaks() {
     }
 }
 
+function resetTimer() {
+    countDownLeft = chosenTimerDuration;
+    breakDurationLeft = chosenBreakDuration;
 
+    const seconds = countDownLeft % 60;
+    const minutes = Math.floor((countDownLeft - seconds) / 60);
+
+    if (countDownLeft <= 0) {
+        console.log('00:00');
+        clearInterval(myTimer);
+        countDownLeft = chosenTimerDuration;
+        if (breaksLeft === 0) {
+            startButton.removeAttribute("disabled", "disabled");
+            return;
+        }
+        breaks();
+        return;
+    } if (minutes < 10) {
+        if (seconds < 10) {
+            countDownTimer = '0' + minutes + ':' + '0' + seconds;
+            console.log(countDownTimer);
+        } else {
+            countDownTimer = '0' + minutes + ':' + seconds;
+            console.log(countDownTimer);
+        }
+    } else {
+        countDownTimer = minutes + ':' + seconds;
+        console.log(countDownTimer);
+    }    
+}
+
+// Buttons behaviour:
 startButton.addEventListener('click', function() {
-    startCount();
+    startButton.setAttribute("disabled", "disabled");
+    startCount();    
+})
+
+stopButton.addEventListener('click', function() {
+    clearInterval(myTimer);
+    startButton.removeAttribute("disabled", "disabled");
+})
+
+resetButton.addEventListener('click', function() {
+    clearInterval(myTimer);
+    resetTimer();
+    startButton.removeAttribute("disabled", "disabled");    
 })
