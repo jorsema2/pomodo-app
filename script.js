@@ -1,36 +1,15 @@
 // Variables where the settings are stored:
 const sessionLength = document.getElementById('session-duration');
-const breaksNumber = document.getElementById('break-duration');
-const breakLength = document.getElementById('sessions-number');
-
+const breakLength = document.getElementById('break-duration');
+const breaksNumber = document.getElementById('sessions-number');
+const applyChanges = document.getElementById('apply-changes');
 
 // Object that stores the settings chosen by the user:
 const settings = {
-    sessionLength: 2,
-    breaksNumber: 4,
-    breakLength: 1
+    sessionLength: 1500,
+    breaksNumber: 1,
+    breakLength: 300
 }
-
-// Function that assigns default values:
-
-function defaultValue(key, value, targetElement) {
-    sessionLength.defaultValue = settings.sessionLength;
-    breaksNumber.defaultValue = settings.breaksNumber + 1;
-    breakLength.defaultValue = settings.breakLength;
-}
-
-defaultValue();
-
-// Function and events that assign new values:
-
-// function setValue(key, value, targetElement){
-//     paymentDetails[key] = value;
-// }
-
-// sessionLength.onkeyup = function(event) {
-//     setValue('sessionLength', targetElement.value);
-// }
-
 
 // HTML element that shows the timer
 const shownTimer = document.getElementById('countdown-timer');
@@ -43,22 +22,67 @@ const resetButton = document.getElementById('reset');
 // Variable called to start and stop the timer:
 let myTimer;
 
-// // Variables declared for work duration per period:
+// Function that assigns default values:
+
+function defaultValue(key, value, targetElement) {
+    sessionLength.defaultValue = settings.sessionLength;
+    breaksNumber.defaultValue = settings.breaksNumber + 1;
+    breakLength.defaultValue = settings.breakLength;
+}
+
+defaultValue();
+
+// Function and events that assign new values:
+sessionLength.onkeyup = function(event) {
+    settings.sessionLength = sessionLength.value;
+    chosenSessionLength = settings.sessionLength;
+    timerInHtml(settings.sessionLength);
+}
+
+breakLength.onkeyup = function(event) {
+    settings.breakLength = breakLength.value;
+}
+
+breaksNumber.onkeyup = function(event) {
+    settings.breaksNumber = breaksNumber.value - 1;
+}
+
+function setValues() {
+    chosenSessionLength = settings.sessionLength;
+    chosenBreaksNumber = settings.breaksNumber;
+    chosenBreaksLength = settings.breakLength;
+}
+
+// function setValue(key, value, targetElement){
+//     paymentDetails[key] = value;
+// }
+
+// sessionLength.onkeyup = function(event) {
+//     setValue('sessionLength', targetElement.value);
+// }
+
+// Variables declared for work duration per period with a default value assigned:
 let countDownTimer;
-let countDownLeft = settings.sessionLength;
+let chosenSessionLength = settings.sessionLength;
 
-// // Variables declard for number of breaks and break duration:
-let breaksLeft = settings.breaksNumber;
-let breakDurationLeft = settings.breakLength;
+// Variables declard for number of breaks and break duration with their default values assigned:
+let chosenBreaksNumber = settings.breaksNumber;
+let chosenBreaksLength = settings.breakLength;
 
-// Function that shows counter in HTML:
+// Function that shows counter in HTML and its necessary variables:
+let minutes;
+let seconds;
 
-function timerInHtml(minutes, seconds) {
+function timerInHtml(totalSeconds) {
+
+    seconds = totalSeconds % 60;
+    minutes = Math.floor((totalSeconds - seconds) / 60);
+
     if (minutes < 10) {
-        minutes = "0" + minutes;
+        minutes = '0' + minutes;
     }
     if (seconds < 10) {
-        seconds = "0" + seconds;
+        seconds = '0' + seconds;
     }
     countDownTimer = minutes + ':' + seconds;
     shownTimer.innerHTML = countDownTimer;
@@ -66,39 +90,29 @@ function timerInHtml(minutes, seconds) {
 
 // Initial timer value;
 
-function initialTimer() {
-    const seconds = countDownLeft % 60;
-    const minutes = Math.floor((countDownLeft - seconds) / 60);
-
-    timerInHtml(minutes, seconds);
-}
-
-// Show initial value in timer onload:
-initialTimer();
+timerInHtml(settings.sessionLength);
 
 // Function to count time left to work during one period:
 function startCount() {
     myTimer = setInterval(timer, 1000);
 
     function timer() {
-        const seconds = countDownLeft % 60;
-        const minutes = Math.floor((countDownLeft - seconds) / 60);
         
-        if (countDownLeft <= 0) {
-            shownTimer.innerHTML = "00:00";
+        if (settings.sessionLength <= 0) {
+            shownTimer.innerHTML = '00:00';
             clearInterval(myTimer);
-            countDownLeft = settings.sessionLength;
-            if (breaksLeft === 0) {
-                startButton.removeAttribute("disabled", "disabled");
-                breaksLeft = settings.breaksNumber;
+            settings.sessionLength = chosenSessionLength;
+            if (settings.breaksNumber === 0) {
+                startButton.removeAttribute('disabled', 'disabled');
+                settings.breaksNumber = chosenBreaksNumber;
                 return;
             }
             breaks();
             return;
         } else {
-            timerInHtml(minutes, seconds);
+            timerInHtml(settings.sessionLength);
         }
-        countDownLeft--;
+        settings.sessionLength--;
     }
 }
 
@@ -107,51 +121,52 @@ function breaks() {
     myTimer = setInterval(timer, 1000);
 
     function timer() {
-        const seconds = breakDurationLeft % 60;
-        const minutes = Math.floor((breakDurationLeft - seconds) / 60);
         
-        if (breakDurationLeft <= 0) {
-            shownTimer.innerHTML = "00:00";
+        if (settings.breakLength <= 0) {
+            shownTimer.innerHTML = '00:00';
             clearInterval(myTimer);
-            breakDurationLeft = settings.breakLength;
-            breaksLeft--;
+            settings.breakLength = chosenBreaksLength;
+            settings.breaksNumber--;
             startCount();
             return;
         } else {
-            timerInHtml(minutes, seconds);
+            timerInHtml(settings.breakLength);
         }
-        breakDurationLeft--;
+        settings.breakLength--;
     }
 }
 
+// Function to reset the timer:
+
 function resetTimer() {
-    countDownLeft = settings.sessionLength;
-    breakDurationLeft = settings.breakLength;
-    breaksLeft = settings.breaksNumber;    
+    settings.sessionLength = chosenSessionLength;
+    settings.breakLength = chosenBreaksLength;
+    settings.breaksNumber = chosenBreaksNumber;    
 
-    const seconds = countDownLeft % 60;
-    const minutes = Math.floor((countDownLeft - seconds) / 60);
-
-    timerInHtml(minutes, seconds);
+    timerInHtml(settings.sessionLength);
 }
 
 // Buttons behaviour:
 startButton.addEventListener('click', function() {
-    startButton.setAttribute("disabled", "disabled");
-    if (breakDurationLeft < settings.breakLength) {
+    startButton.setAttribute('disabled', 'disabled');
+    if (chosenBreaksLength < settings.breakLength) {
         breaks();
     } else {
         startCount();
-    }    
+    }
 })
 
 stopButton.addEventListener('click', function() {
     clearInterval(myTimer);
-    startButton.removeAttribute("disabled", "disabled");
+    startButton.removeAttribute('disabled', 'disabled');
 })
 
 resetButton.addEventListener('click', function() {
     clearInterval(myTimer);
     resetTimer();
-    startButton.removeAttribute("disabled", "disabled");    
+    startButton.removeAttribute('disabled', 'disabled');    
+})
+
+applyChanges.addEventListener('click', function() {
+    setValues();
 })
