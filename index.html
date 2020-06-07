@@ -6,11 +6,27 @@
     </head>
 
     <body>
-        <p id="countdown-timer"></p>
+        <!--Timer and its buttons-->
+        <div>
+            <p id="countdown-timer"></p>
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
 
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-        <button id="reset">Reset</button>
+        <!--Settings-->
+        <div>
+            <h4>Settings</h4>
+            <form autocomplete="off">
+                <label for="session-duration">Work session duration</label>
+                <input id="session-duration">
+                <label for="break-duration">Break duration</label>
+                <input id="break-duration">
+                <label for="sessions-number">Number of sessions</label>
+                <input id="sessions-number">
+                <button type="submit">Apply changes</button>
+            </form>
+        </div>
         <script src="script.js"></script>
     </body>
     
