@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Pomodoro</title>
-        <link rel="stylesheet" href="assets/css/style.css">
-    </head>
+  <head>
+    <title>Pomodoro</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
 
-    <body>
-        <!--Timer and its buttons-->
+  <body>
+    <!--Timer and its buttons-->
+    <div>
+      <p id="countdown-timer"></p>
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <!--Settings-->
+    <div>
+      <h4>Settings</h4>
+      <form id="form" autocomplete="off">
         <div>
-            <p id="countdown-timer"></p>
-            <button id="start">Start</button>
-            <button id="stop">Stop</button>
-            <button id="reset">Reset</button>
+          <label for="session-duration">Work session duration</label>
+          <input id="session-duration" />
+        </div>
+        <div>
+          <label for="break-duration">Break duration</label>
+          <input id="break-duration" />
+        </div>
+        <div>
+          <label for="sessions-number">Number of sessions</label>
+          <input id="sessions-number" />
         </div>
 
-        <!--Settings-->
-        <div>
-            <h4>Settings</h4>
-            <form id="form" autocomplete="off">
-                <label for="session-duration">Work session duration</label>
-                <input id="session-duration">
-                <label for="break-duration">Break duration</label>
-                <input id="break-duration">
-                <label for="sessions-number">Number of sessions</label>
-                <input id="sessions-number">
-                <button id="apply-changes" type="button">Apply changes</button>
-            </form>
-        </div>
-        <script src="script.js"></script>
-    </body>
-    
+        <button id="apply-changes" type="button">Apply changes</button>
+      </form>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>

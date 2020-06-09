@@ -5,13 +5,6 @@ const breakLength = document.getElementById('break-duration');
 const breaksNumber = document.getElementById('sessions-number');
 const applyChanges = document.getElementById('apply-changes');
 
-// Object that stores the settings chosen by the user, at first with the Pomodoro commonly used values:
-const settings = {
-    sessionLength: 1500,
-    breaksNumber: 1,
-    breakLength: 300
-}
-
 // HTML element that shows the timer
 const shownTimer = document.getElementById('countdown-timer');
 
@@ -20,17 +13,34 @@ const startButton = document.getElementById('start');
 const stopButton = document.getElementById('stop');
 const resetButton = document.getElementById('reset');
 
+// Object that stores the settings chosen by the user, at first with the Pomodoro commonly used values:
+let initialSettings = {
+    sessionLength: 1500,
+    breaksNumber: 1,
+    breakLength: 300
+}
+
+let settings = Object.assign({}, initialSettings);
+
+// Variables declared for work duration per period with a default value assigned:
+let countDownTimer;
+
+// Function that shows counter in HTML and its necessary variables:
+let minutes;
+let seconds;
+
 // Variable called to start and stop the timer:
 let myTimer;
 
-// Pomodoro commonly used values being used as input default values:
+// Variable to store minutes and seconds converted to seconds:
+let minPlusSec;
 
+// Pomodoro commonly used values being used as input default values:
 sessionLength.defaultValue = '25:00';
 breaksNumber.defaultValue = '2';
 breakLength.defaultValue = '05:00';
 
-// Variable to store minutes and seconds converted to seconds:
-let minPlusSec;
+
 
 // Function and events that assign new values:
 sessionLength.onkeyup = function(event) {
@@ -65,11 +75,6 @@ breaksNumber.onkeyup = function(event) {
     });
 }
 
-function setValues() {
-    chosenSessionLength = settings.sessionLength;
-    chosenBreaksNumber = settings.breaksNumber;
-    chosenBreaksLength = settings.breakLength;
-}
 
 // Function that converts to seconds:
 
@@ -85,24 +90,14 @@ function secondsConversion(inputValue) {
 }
 
 // function setValue(key, value, targetElement){
-//     paymentDetails[key] = value;
+//     settings[key] = value;
 // }
 
 // sessionLength.onkeyup = function(event) {
 //     setValue('sessionLength', targetElement.value);
 // }
 
-// Variables declared for work duration per period with a default value assigned:
-let countDownTimer;
-let chosenSessionLength = settings.sessionLength;
 
-// Variables declard for number of breaks and break duration with their default values assigned:
-let chosenBreaksNumber = settings.breaksNumber;
-let chosenBreaksLength = settings.breakLength;
-
-// Function that shows counter in HTML and its necessary variables:
-let minutes;
-let seconds;
 
 function timerInHtml(totalSeconds) {
 
@@ -132,10 +127,10 @@ function startCount() {
         if (settings.sessionLength <= 0) {
             shownTimer.innerHTML = '00:00';
             clearInterval(myTimer);
-            settings.sessionLength = chosenSessionLength;
+            settings.sessionLength = initialSettings.sessionLength;
             if (settings.breaksNumber === 0) {
                 startButton.removeAttribute('disabled', 'disabled');
-                settings.breaksNumber = chosenBreaksNumber;
+                settings.breaksNumber = initialSettings.breaksNumber;
                 return;
             }
             breaks();
@@ -156,7 +151,7 @@ function breaks() {
         if (settings.breakLength <= 0) {
             shownTimer.innerHTML = '00:00';
             clearInterval(myTimer);
-            settings.breakLength = chosenBreaksLength;
+            settings.breakLength = initialSettings.breakLength;
             settings.breaksNumber--;
             startCount();
             return;
@@ -169,19 +164,12 @@ function breaks() {
 
 // Function to reset the timer:
 
-function resetTimer() {
-    settings.sessionLength = chosenSessionLength;
-    settings.breakLength = chosenBreaksLength;
-    settings.breaksNumber = chosenBreaksNumber; 
-
-    timerInHtml(settings.sessionLength);
-}
 
 // Buttons behaviour:
 startButton.addEventListener('click', function() {
     startButton.setAttribute('disabled', 'disabled');
     document.getElementById('apply-changes').disabled = true;
-    if (chosenBreaksLength < settings.breakLength) {
+    if (initialSettings.breakLength < settings.breakLength) {
         breaks();
     } else {
         startCount();
@@ -195,13 +183,18 @@ stopButton.addEventListener('click', function() {
 
 resetButton.addEventListener('click', function() {
     clearInterval(myTimer);
-    resetTimer();
+    settings = Object.assign({}, {
+    sessionLength: 1500,
+    breaksNumber: 1,
+    breakLength: 300
+})
+    timerInHtml(1500);
     startButton.removeAttribute('disabled', 'disabled');
     applyChanges.disabled = false;
 })
 
 applyChanges.addEventListener('click', function() {
-    setValues();
+    initialSettings = Object.assign({}, settings)
 })
 
 // Object for later validation:
