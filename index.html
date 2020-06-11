@@ -7,33 +7,51 @@
   </head>
 
   <body>
-    <!--Timer and its buttons-->
-    <div>
-      <p id="countdown-timer"></p>
-      <button id="start">Start</button>
-      <button id="stop">Stop</button>
-      <button id="reset">Reset</button>
-    </div>
-
-    <!--Settings-->
-    <div>
-      <h4>Settings</h4>
-      <form id="form" autocomplete="off">
+    <div class="flex-row space-around">
+      <!--Pomodoro app-->
+      <div>
+        <!--Timer and its buttons-->
         <div>
-          <label for="session-duration">Work session duration</label>
-          <input id="session-duration" />
-        </div>
-        <div>
-          <label for="break-duration">Break duration</label>
-          <input id="break-duration" />
-        </div>
-        <div>
-          <label for="sessions-number">Number of sessions</label>
-          <input id="sessions-number" />
+          <p id="countdown-timer"></p>
+          <button id="start">Start</button>
+          <button id="stop">Pause</button>
+          <button id="reset">Stop</button>
         </div>
 
-        <button id="apply-changes" type="button">Apply changes</button>
-      </form>
+        <!--Settings-->
+        <div>
+          <h4>Settings</h4>
+          <form id="form" autocomplete="off">
+            <div>
+              <label for="session-duration">Work session duration</label>
+              <input id="session-duration" />
+            </div>
+            <div>
+              <label for="break-duration">Break duration</label>
+              <input id="break-duration" />
+            </div>
+            <div>
+              <label for="sessions-number">Number of sessions</label>
+              <input id="sessions-number" />
+            </div>
+            <button id="apply-changes" type="button">Apply changes</button>
+          </form>
+        </div>
+      </div>
+
+      <!--To-do app-->
+      <div>
+        <!--List of tasks-->
+        <div>
+          <ul id="task-list"></ul>
+        </div>
+
+        <!--Box to input new tasks-->
+        <div>
+          <input id="input-task" type="text" />
+          <button id="add-task" type="button">Add to the list</button>
+        </div>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
