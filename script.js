@@ -23,7 +23,7 @@ let initialSettings = {
 };
 
 // Object that gets modified when the countdown is running:
-let settings = Object.assign({}, initialSettings);
+let settings = JSON.parse(JSON.stringify(initialSettings));
 
 // Pomodoro commonly used values being used as input default values:
 sessionLength.defaultValue = "25:00";
@@ -163,7 +163,7 @@ function breaks() {
 // Function that resets all settings:
 function reset() {
   clearInterval(myTimer);
-  settings = initialSettings;
+  settings = JSON.parse(JSON.stringify(initialSettings));
   timerInHtml(1500);
   startButton.removeAttribute("disabled", "disabled");
   applyChanges.disabled = false;
