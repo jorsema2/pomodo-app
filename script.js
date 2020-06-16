@@ -248,7 +248,6 @@ const taskAdder = document.getElementById('add-task');
 
 // Array that stores new tasks:
 let tasks = [];
-let i = 0;
 
 // Event listener that stores the new task and shows it:
 taskAdder.addEventListener('click', (event)=> {
@@ -281,9 +280,24 @@ taskAdder.addEventListener('click', (event)=> {
   });
 });
 
+// Variable that will store the innerHTML of a specific li element:
+let liText;
+
 function deleteMe() {
-  const thisButton = this.parentNode;
-  const threeButtonsDiv = thisButton.parentNode;
-  threeButtonsDiv.parentNode.removeChild(threeButtonsDiv);
+  const threeButtonsDiv = this.parentNode;
+  liText = threeButtonsDiv.parentElement.childNodes[0].innerHTML;
+
+  const deleteTasks = tasks.filter( (task) => {
+    return task !== liText;
+  })
+
+  tasks = deleteTasks;
+
+  const wholeTaskDiv= threeButtonsDiv.parentNode;
+  wholeTaskDiv.parentNode.removeChild(wholeTaskDiv);
   reset();
 };
+
+
+// When count is initiated from the to-do app, stop button doesn't stop the countdown
+// The start count of the to-do app doesn't get reseted when we click "stop"!
