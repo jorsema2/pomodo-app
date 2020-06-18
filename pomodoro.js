@@ -1,80 +1,4 @@
-// // Everything about the pomodoro app (timer, its buttons and its settings):
-
-// // Variables where the settings are stored:
-// const form = document.getElementById("form");
-// const sessionLength = document.getElementById("session-duration");
-// const breakLength = document.getElementById("break-duration");
-// const breaksNumber = document.getElementById("sessions-number");
-// const applyChanges = document.getElementById("apply-changes");
-
-// // HTML element that shows the timer
-// const shownTimer = document.getElementById("countdown-timer");
-
-// // Buttons:
-// const startButton = document.getElementById("start");
-// const stopButton = document.getElementById("stop");
-// const resetButton = document.getElementById("reset");
-
-// // Object that stores the initial settings:
-// let initialSettings = {
-//   sessionLength: 1500,
-//   breaksNumber: 1,
-//   breakLength: 300,
-// };
-
-// // Object that gets modified when the countdown is running:
-// let settings = JSON.parse(JSON.stringify(initialSettings));
-
-// // Pomodoro commonly used values being used as input default values:
-// sessionLength.defaultValue = "25:00";
-// breaksNumber.defaultValue = "2";
-// breakLength.defaultValue = "05:00";
-
-// // Variables declared for work duration per period with a default value assigned:
-// let countDownTimer;
-
-// // Function that shows counter in HTML and its necessary variables:
-// let minutes;
-// let seconds;
-
-// // Variable called to start and stop the timer:
-// let myTimer;
-
-// // Variable to store minutes and seconds converted to seconds:
-// let minPlusSec;
-
-// // Function and events that assign new values:
-// sessionLength.onkeyup = function (event) {
-//   settings.sessionLength = sessionLength.value;
-//   validateField({
-//     htmlElement: event.target,
-//     regex: /^([0-5][0-9]):([0-5][0-9])$/,
-//     key: "sessionLength",
-//   });
-//   secondsConversion(sessionLength.value);
-//   settings.sessionLength = minPlusSec;
-//   timerInHtml(settings.sessionLength);
-// };
-
-// breakLength.onkeyup = function (event) {
-//   settings.breakLength = breakLength.value;
-//   validateField({
-//     htmlElement: event.target,
-//     regex: /^([0-5][0-9]):([0-5][0-9])$/,
-//     key: "breakLength",
-//   });
-//   secondsConversion(settings.breakLength);
-//   settings.breakLength = minPlusSec;
-// };
-
-// breaksNumber.onkeyup = function (event) {
-//   settings.breaksNumber = breaksNumber.value - 1;
-//   validateField({
-//     htmlElement: event.target,
-//     regex: /^([0-9])+$/,
-//     key: "breaksNumber",
-//   });
-// };
+// Everything about the pomodoro app (timer, its buttons and its settings):
 
 // // Function that converts to seconds:
 // function secondsConversion(inputValue) {
@@ -187,96 +111,65 @@
 //   initialSettings = Object.assign({}, settings);
 // });
 
-// // Object for later validation:
-// const isDataValid = {
-//   sessionLength: true,
-//   breaksNumber: true,
-//   breakLength: true,
-// };
-
-// // Function for validation:
-// function validateField(config) {
-//   const validationResult = config.regex.test(settings[config.key]);
-//   console.log(validationResult);
-//   if (settings[config.key] == "") {
-//     config.htmlElement.classList.remove("error");
-//     return true;
-//   } else if (validationResult === false) {
-//     config.htmlElement.classList.add("error");
-//     isDataValid[config.key] = false;
-//     return false;
-//   } else {
-//     config.htmlElement.classList.remove("error");
-//     isDataValid[config.key] = true;
-//   }
-// }
-
-// // If all data is valid, enable apply-changes button:
-// applyChanges.disabled = true;
-
-// form.addEventListener("focusout", function () {
-//   if (
-//     isDataValid.sessionLength &&
-//     isDataValid.breaksNumber &&
-//     isDataValid.breakLength
-//   ) {
-//     applyChanges.style.backgroundColor = "green";
-//     applyChanges.style.border = "green";
-//     applyChanges.disabled = false;
-//   } else {
-//     applyChanges.style.backgroundColor = "";
-//     applyChanges.style.border = "";
-//     applyChanges.disabled = true;
-//   }
-// });
-
 function Pomodoro() {
-    // Variables where the settings are stored:
-    this.form = document.getElementById("form");
-    this.sessionLength = document.getElementById("session-duration");
-    this.breakLength = document.getElementById("break-duration");
-    this.breaksNumber = document.getElementById("sessions-number");
-    this.applyChanges = document.getElementById("apply-changes");
+  // Variables where the settings are stored:
+  this.form = document.getElementById("form");
+  this.sessionLength = document.getElementById("session-duration");
+  this.breakLength = document.getElementById("break-duration");
+  this.breaksNumber = document.getElementById("sessions-number");
+  this.applyChanges = document.getElementById("apply-changes");
 
-    // HTML element that shows the timer
-    this.shownTimer = document.getElementById("countdown-timer");
+  // HTML element that shows the timer
+  this.shownTimer = document.getElementById("countdown-timer");
 
-    // Buttons:
-    this.startButton = document.getElementById("start");
-    this.stopButton = document.getElementById("stop");
-    this.resetButton = document.getElementById("reset");
+  // Buttons:
+  this.startButton = document.getElementById("start");
+  this.stopButton = document.getElementById("stop");
+  this.resetButton = document.getElementById("reset");
 
-    // Object that stores the initial settings:
-    this.initialSettings = {
-        sessionLength: 1500,
-        breaksNumber: 1,
-        breakLength: 300,
-    };
+  // Object that stores the initial settings:
+  this.initialSettings = {
+    sessionLength: 1500,
+    breaksNumber: 1,
+    breakLength: 300,
+  };
 
-    // Object that gets modified when the countdown is running:
-    this.settings = JSON.parse(JSON.stringify(this.initialSettings));
+  // Object that gets modified when the countdown is running:
+  this.settings = JSON.parse(JSON.stringify(this.initialSettings));
 
-    // Pomodoro commonly used values being used as input default values:
-    this.sessionLength.defaultValue = "25:00";
-    this.breaksNumber.defaultValue = "2";
-    this.breakLength.defaultValue = "05:00";
+  // Pomodoro commonly used values being used as input default values:
+  this.sessionLength.defaultValue = "25:00";
+  this.breaksNumber.defaultValue = "2";
+  this.breakLength.defaultValue = "05:00";
 
-    // Variables declared for work duration per period with a default value assigned:
-    this.countDownTimer;
+  // Variables declared for work duration per period with a default value assigned:
+  this.countDownTimer;
 
-    // Function that shows counter in HTML and its necessary variables:
-    this.minutes;
-    this.seconds;
+  // Function that shows counter in HTML and its necessary variables:
+  this.minutes;
+  this.seconds;
 
-    // Variable called to start and stop the timer:
-    this.myTimer;
+  // Variable called to start and stop the timer:
+  this.myTimer;
 
-    // Variable to store minutes and seconds converted to seconds:
-    this.minPlusSec;
+  // Variable to store minutes and seconds converted to seconds:
+  this.minPlusSec;
+
+  // Object for later validation:
+  this.isDataValid = {
+    sessionLength: true,
+    breaksNumber: true,
+    breakLength: true,
+  };
+
+  // Apply-changes button is disabled by default:
+  this.applyChanges.disabled = true;
 }
 
+Pomodoro();
+
 // Function that converts seconds to "mm:ss" format:
-Pomodoro.prototype.timerInHtml = function(totalSeconds) {
+Pomodoro.prototype.timerInHtml = function (totalSeconds) {
   this.seconds = totalSeconds % 60;
   this.minutes = Math.floor((totalSeconds - this.seconds) / 60);
 
@@ -286,11 +179,12 @@ Pomodoro.prototype.timerInHtml = function(totalSeconds) {
   if (this.seconds < 10) {
     this.seconds = "0" + this.seconds;
   }
+  
   this.countDownTimer = this.minutes + ":" + this.seconds;
   this.shownTimer.innerHTML = this.countDownTimer;
-}
+};
 
-Pomodoro.prototype.startCount = function() {
+Pomodoro.prototype.startCount = function () {
   this.myTimer = setInterval(timer, 1000);
   const that = this;
 
@@ -311,10 +205,9 @@ Pomodoro.prototype.startCount = function() {
     }
     that.settings.sessionLength--;
   }
-}
+};
 
-
-Pomodoro.prototype.start = function() {
+Pomodoro.prototype.start = function () {
   this.startButton.setAttribute("disabled", "disabled");
   document.getElementById("apply-changes").disabled = true;
   if (this.initialSettings.breakLength < this.settings.breakLength) {
@@ -322,7 +215,81 @@ Pomodoro.prototype.start = function() {
   } else {
     this.startCount();
   }
-}
+};
 
+// Function and events that assign new values:
+sessionLength.onkeyup = function (event) {
+  settings.sessionLength = sessionLength.value;
+  validateField({
+    htmlElement: event.target,
+    regex: /^([0-5][0-9]):([0-5][0-9])$/,
+    key: "sessionLength",
+  });
+  secondsConversion(sessionLength.value);
+  settings.sessionLength = minPlusSec;
+  timerInHtml(settings.sessionLength);
+};
 
+Pomodoro.breakLength.onkeyup = function (event) {
+  this.settings.breakLength = this.breakLength.value;
+  validateField({
+    htmlElement: event.target,
+    regex: /^([0-5][0-9]):([0-5][0-9])$/,
+    key: "breakLength",
+  });
+  secondsConversion(this.settings.breakLength);
+  this.settings.breakLength = minPlusSec;
+};
 
+Pomodoro.prototype.breaksNumber.onkeyup = function (event) {
+  this.settings.breaksNumber = this.breaksNumber.value - 1;
+  validateField({
+    htmlElement: event.target,
+    regex: /^([0-9])+$/,
+    key: "breaksNumber",
+  });
+};
+
+// Function for validation:
+function validateField (config) {
+  const validationResult = config.regex.test(this.settings[config.key]);
+  if (this.settings[config.key] == "") {
+    config.htmlElement.classList.remove("error");
+    return true;
+  } else if (validationResult === false) {
+    config.htmlElement.classList.add("error");
+    this.isDataValid[config.key] = false;
+    return false;
+  } else {
+    config.htmlElement.classList.remove("error");
+    this.isDataValid[config.key] = true;
+  }
+};
+
+// If all data is valid, enable apply-changes button:
+
+// form.addEventListener("focusout", function () {
+//   if (
+//     isDataValid.sessionLength &&
+//     isDataValid.breaksNumber &&
+//     isDataValid.breakLength
+//   ) {
+//     applyChanges.style.backgroundColor = "green";
+//     applyChanges.style.border = "green";
+//     applyChanges.disabled = false;
+//   } else {
+//     applyChanges.style.backgroundColor = "";
+//     applyChanges.style.border = "";
+//     applyChanges.disabled = true;
+//   }
+// });
+
+// Disable start button when data is modified but user hasn't clicked "apply-changes" yet.
+
+// If the count isn't running, the stop button doesn't appear.
+
+// If the count is running, the start button and the reset button don't appear AND the "apply-changes" button is disabled.
+
+// Disable "apply changes" while the counter is running.
+
+// Add divs at some point (I have to think when is better for UX) to explain what format should have the data inputted.
