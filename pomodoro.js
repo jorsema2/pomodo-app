@@ -1,116 +1,6 @@
 // Everything about the pomodoro app (timer, its buttons and its settings):
 
-// // Function that converts to seconds:
-// function secondsConversion(inputValue) {
-//   let min = inputValue.substring(0, 2);
-//   let sec = inputValue.substring(3);
-
-//   // Convert string to number:
-//   min = parseInt(min);
-//   sec = parseInt(sec);
-
-//   minPlusSec = min * 60 + sec;
-// }
-
-// // Function that converts seconds to "mm:ss" format:
-// function timerInHtml(totalSeconds) {
-//   seconds = totalSeconds % 60;
-//   minutes = Math.floor((totalSeconds - seconds) / 60);
-
-//   if (minutes < 10) {
-//     minutes = "0" + minutes;
-//   }
-//   if (seconds < 10) {
-//     seconds = "0" + seconds;
-//   }
-//   countDownTimer = minutes + ":" + seconds;
-//   shownTimer.innerHTML = countDownTimer;
-// }
-
-// // Initial timer value:
-// timerInHtml(settings.sessionLength);
-
-// // Function that checks when to start work or when to continue break:
-
-// function start() {
-//   startButton.setAttribute("disabled", "disabled");
-//   document.getElementById("apply-changes").disabled = true;
-//   if (initialSettings.breakLength < settings.breakLength) {
-//     breaks();
-//   } else {
-//     startCount();
-//   }
-// }
-
-// // Function to count time left to work during one period:
-// function startCount() {
-//   myTimer = setInterval(timer, 1000);
-
-//   function timer() {
-//     if (settings.sessionLength <= 0) {
-//       shownTimer.innerHTML = "00:00";
-//       clearInterval(myTimer);
-//       settings.sessionLength = initialSettings.sessionLength;
-//       if (settings.breaksNumber === 0) {
-//         startButton.removeAttribute("disabled", "disabled");
-//         settings.breaksNumber = initialSettings.breaksNumber;
-//         return;
-//       }
-//       breaks();
-//       return;
-//     } else {
-//       timerInHtml(settings.sessionLength);
-//     }
-//     settings.sessionLength--;
-//   }
-// }
-
-// // Function to count time left for break:
-// function breaks() {
-//   myTimer = setInterval(timer, 1000);
-
-//   function timer() {
-//     if (settings.breakLength <= 0) {
-//       shownTimer.innerHTML = "00:00";
-//       clearInterval(myTimer);
-//       settings.breakLength = initialSettings.breakLength;
-//       settings.breaksNumber--;
-//       startCount();
-//       return;
-//     } else {
-//       timerInHtml(settings.breakLength);
-//     }
-//     settings.breakLength--;
-//   }
-// }
-
-// // Function that resets all settings:
-// function reset() {
-//   clearInterval(myTimer);
-//   settings = JSON.parse(JSON.stringify(initialSettings));
-//   timerInHtml(1500);
-//   startButton.removeAttribute("disabled", "disabled");
-//   applyChanges.disabled = false;
-// }
-
-// // Buttons behaviour:
-// startButton.addEventListener("click", function () {
-//   start();
-// });
-
-// stopButton.addEventListener("click", function () {
-//   clearInterval(myTimer);
-//   startButton.removeAttribute("disabled", "disabled");
-// });
-
-// resetButton.addEventListener("click", function () {
-//   reset();
-// });
-
-// applyChanges.addEventListener("click", function () {
-//   initialSettings = Object.assign({}, settings);
-// });
-
+// Class that defines variables and objects necessary to make the pomodoro app:
 function Pomodoro() {
   // Variables where the settings are stored:
   this.form = document.getElementById("form");
@@ -164,60 +54,115 @@ function Pomodoro() {
 
   // Apply-changes button is disabled by default:
   this.applyChanges.disabled = true;
+
+  
+  this.breaksNumber.onkeyup = function (event) {
+    console.log('hey');
+    settings.breaksNumber = breaksNumber.value - 1;
+    validateField({
+      htmlElement: event.target,
+      regex: /^([0-9])+$/,
+      key: "breaksNumber",
+    });
+  };
 }
 
 Pomodoro();
 
 // Function that converts seconds to "mm:ss" format:
 Pomodoro.prototype.timerInHtml = function (totalSeconds) {
-  this.seconds = totalSeconds % 60;
-  this.minutes = Math.floor((totalSeconds - this.seconds) / 60);
+  seconds = totalSeconds % 60;
+  minutes = Math.floor((totalSeconds - seconds) / 60);
 
-  if (this.minutes < 10) {
-    this.minutes = "0" + this.minutes;
+  if (minutes < 10) {
+    minutes = "0" + minutes;
   }
-  if (this.seconds < 10) {
-    this.seconds = "0" + this.seconds;
+  if (seconds < 10) {
+    seconds = "0" + seconds;
   }
   
-  this.countDownTimer = this.minutes + ":" + this.seconds;
-  this.shownTimer.innerHTML = this.countDownTimer;
+  countDownTimer = minutes + ":" + seconds;
+  shownTimer.innerHTML = countDownTimer;
 };
 
+// Initial timer value:
+Pomodoro.prototype.timerInHtml(settings.sessionLength);
+
 Pomodoro.prototype.startCount = function () {
-  this.myTimer = setInterval(timer, 1000);
-  const that = this;
+  myTimer = setInterval(timer, 1000);
 
   function timer() {
-    if (that.settings.sessionLength <= 0) {
-      that.shownTimer.innerHTML = "00:00";
+    if (settings.sessionLength <= 0) {
+      shownTimer.innerHTML = "00:00";
       clearInterval(myTimer);
-      that.settings.sessionLength = that.initialSettings.sessionLength;
-      if (that.settings.breaksNumber === 0) {
-        that.startButton.removeAttribute("disabled", "disabled");
-        that.settings.breaksNumber = that.initialSettings.breaksNumber;
+      settings.sessionLength = initialSettings.sessionLength;
+      if (settings.breaksNumber === 0) {
+        startButton.removeAttribute("disabled", "disabled");
+        settings.breaksNumber = initialSettings.breaksNumber;
         return;
       }
-      breaks();
+      Pomodoro.prototype.breaks();
       return;
     } else {
-      that.timerInHtml(that.settings.sessionLength);
+      Pomodoro.prototype.timerInHtml(settings.sessionLength);
     }
-    that.settings.sessionLength--;
+    settings.sessionLength--;
   }
 };
 
 Pomodoro.prototype.start = function () {
-  this.startButton.setAttribute("disabled", "disabled");
+  startButton.setAttribute("disabled", "disabled");
   document.getElementById("apply-changes").disabled = true;
-  if (this.initialSettings.breakLength < this.settings.breakLength) {
-    this.breaks();
+  if (initialSettings.breakLength < settings.breakLength) {
+    Pomodoro.prototype.breaks();
   } else {
-    this.startCount();
+    Pomodoro.prototype.startCount();
   }
 };
 
-// Function and events that assign new values:
+// Function to count time left for break:
+Pomodoro.prototype.breaks = function () {
+  myTimer = setInterval(timer, 1000);
+
+  function timer() {
+    if (settings.breakLength <= 0) {
+      shownTimer.innerHTML = "00:00";
+      clearInterval(myTimer);
+      settings.breakLength = initialSettings.breakLength;
+      settings.breaksNumber--;
+      Pomodoro.prototype.startCount();
+      return;
+
+    } else {
+      Pomodoro.prototype.timerInHtml(settings.breakLength);
+    }
+    settings.breakLength--;
+  }
+}
+
+// Function that resets all settings:
+Pomodoro.prototype.reset = function () {
+  clearInterval(myTimer);
+  settings = JSON.parse(JSON.stringify(initialSettings));
+  Pomodoro.prototype.timerInHtml(1500);
+  startButton.removeAttribute("disabled", "disabled");
+  applyChanges.disabled = false;
+}
+
+// Function that converts input to seconds:
+function secondsConversion(inputValue) {
+  let min = inputValue.substring(0, 2);
+  let sec = inputValue.substring(3);
+
+  // Convert string to number:
+  min = parseInt(min);
+  sec = parseInt(sec);
+
+  minPlusSec = min * 60 + sec;
+}
+
+// Events that assign new values and validators:
+
 sessionLength.onkeyup = function (event) {
   settings.sessionLength = sessionLength.value;
   validateField({
@@ -227,62 +172,73 @@ sessionLength.onkeyup = function (event) {
   });
   secondsConversion(sessionLength.value);
   settings.sessionLength = minPlusSec;
-  timerInHtml(settings.sessionLength);
+  Pomodoro.prototype.timerInHtml(settings.sessionLength);
 };
 
-Pomodoro.breakLength.onkeyup = function (event) {
-  this.settings.breakLength = this.breakLength.value;
+breakLength.onkeyup = function (event) {
+  settings.breakLength = breakLength.value;
   validateField({
     htmlElement: event.target,
     regex: /^([0-5][0-9]):([0-5][0-9])$/,
     key: "breakLength",
   });
-  secondsConversion(this.settings.breakLength);
-  this.settings.breakLength = minPlusSec;
+  secondsConversion(settings.breakLength);
+  settings.breakLength = minPlusSec;
 };
 
-Pomodoro.prototype.breaksNumber.onkeyup = function (event) {
-  this.settings.breaksNumber = this.breaksNumber.value - 1;
-  validateField({
-    htmlElement: event.target,
-    regex: /^([0-9])+$/,
-    key: "breaksNumber",
-  });
-};
 
 // Function for validation:
 function validateField (config) {
-  const validationResult = config.regex.test(this.settings[config.key]);
-  if (this.settings[config.key] == "") {
+  const validationResult = config.regex.test(settings[config.key]);
+  if (settings[config.key] == "") {
     config.htmlElement.classList.remove("error");
     return true;
   } else if (validationResult === false) {
     config.htmlElement.classList.add("error");
-    this.isDataValid[config.key] = false;
+    isDataValid[config.key] = false;
     return false;
   } else {
     config.htmlElement.classList.remove("error");
-    this.isDataValid[config.key] = true;
+    isDataValid[config.key] = true;
   }
 };
 
 // If all data is valid, enable apply-changes button:
 
-// form.addEventListener("focusout", function () {
-//   if (
-//     isDataValid.sessionLength &&
-//     isDataValid.breaksNumber &&
-//     isDataValid.breakLength
-//   ) {
-//     applyChanges.style.backgroundColor = "green";
-//     applyChanges.style.border = "green";
-//     applyChanges.disabled = false;
-//   } else {
-//     applyChanges.style.backgroundColor = "";
-//     applyChanges.style.border = "";
-//     applyChanges.disabled = true;
-//   }
-// });
+form.addEventListener("focusout", function () {
+  if (
+    isDataValid.sessionLength &&
+    isDataValid.breaksNumber &&
+    isDataValid.breakLength
+  ) {
+    applyChanges.style.backgroundColor = "green";
+    applyChanges.style.border = "green";
+    applyChanges.disabled = false;
+  } else {
+    applyChanges.style.backgroundColor = "";
+    applyChanges.style.border = "";
+    applyChanges.disabled = true;
+  }
+});
+
+// // Buttons behaviour:
+startButton.addEventListener("click", function () {
+  Pomodoro.prototype.start();
+});
+
+stopButton.addEventListener("click", function () {
+  clearInterval(myTimer);
+  startButton.removeAttribute("disabled", "disabled");
+});
+
+resetButton.addEventListener("click", function () {
+  Pomodoro.prototype.reset();
+});
+
+applyChanges.addEventListener("click", function () {
+  initialSettings = Object.assign({}, settings);
+});
+
 
 // Disable start button when data is modified but user hasn't clicked "apply-changes" yet.
 

@@ -55,7 +55,7 @@ function deleteMe() {
 
   const wholeTaskDiv = threeButtonsDiv.parentNode;
   wholeTaskDiv.parentNode.removeChild(wholeTaskDiv);
-  reset();
+  Pomodoro.prototype.reset();
 }
 
 // When count is initiated from the to-do app, stop button doesn't stop the countdown
